@@ -1,46 +1,50 @@
 <template xmlns="http://www.w3.org/1999/html">
-<!--  <el-text type="danger" v-show="isNameShow">姓名：{{ obj.name }}</el-text>-->
-<!--  <br>-->
-<!--  <el-text type="danger" v-show="isAgeShow">年龄：{{ obj.age }}</el-text>-->
-<!--  <br>-->
-<!--  <el-button type="success" @click="increment">count++：{{ count }}</el-button>-->
-  <hello v-for="player in array" :name=player.name :age=player.age></hello>
+    <!--  自定义事件 -->
+    <CustomEvent :students=students @delete-event=deleteStudentHandler @create-event="createStudentHandler"></CustomEvent>
 </template>
 
 <script setup>
-import {ref, reactive, computed} from "vue";
-import Hello from "@/components/Hello.vue";
+import CustomEvent from "@/components/CustomEvent.vue";
+import {reactive} from "vue";
+const students = reactive([
+    {
+        id: 1,
+        name: "孙悟空",
+        age: 18,
+        gender: '男',
+        address: "花果山"
+    },
+    {
+        id: 2,
+        name: "猪八戒",
+        age: 28,
+        gender: '男',
+        address: "高老庄"
+    },
+    {
+        id: 3,
+        name: "沙和尚",
+        age: 38,
+        gender: '男',
+        address: "流沙河"
+    },
+    {
+        id: 4,
+        name: "唐三藏",
+        age: 16,
+        gender: '男',
+        address: "大唐"
+    }
+])
+function deleteStudentHandler(index) {
+    students.splice(index, 1);
+    console.log("删除学生")
+}
 
-const count = ref(0)
-const obj = reactive({
-  name: "Logan Luo",
-  age: "24"
-})
-
-const isNameShow = computed(() => {
-  return count.value >= 2
-})
-const isAgeShow = computed(() => {
-  return count.value >= 1
-})
-
-const array = [
-  {
-    name: "梅西",
-    age: 32
-  },
-  {
-    name: "C罗",
-    age: 38
-  },
-  {
-    name: "内马尔",
-    age: 36
-  }
-]
-
-function increment() {
-  count.value++;
+function createStudentHandler(student) {
+    const lastId = students[students.length - 1].id;
+    student.id = !isNaN(lastId) ? lastId + 1 : 1;
+    students.push(student);
 }
 </script>
 
