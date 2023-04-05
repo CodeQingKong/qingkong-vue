@@ -43,6 +43,10 @@ function deleteEventHandler(index){
 }
 function createEventHandler(student){
     customEvent('create-event',Object.assign({},student))
+    student.name = ""
+    student.age = ""
+    student.gender = ""
+    student.address = ""
 }
 defineProps(['students'])
 const student = reactive({
